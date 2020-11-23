@@ -3,6 +3,9 @@
 #ifndef MainH
 #define MainH
 //---------------------------------------------------------------------------
+#include "TCPSocketThread.h"
+
+//---------------------------------------------------------------------------
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
@@ -70,6 +73,10 @@
 #include "dxSkinXmas2008Blue.hpp"
 #include <Vcl.ExtCtrls.hpp>
 #include "AdvMemo.hpp"
+#include "AdvGrid.hpp"
+#include "AdvObj.hpp"
+#include "BaseGrid.hpp"
+#include <Vcl.Grids.hpp>
 //---------------------------------------------------------------------------
 class TFormMain : public TForm
 {
@@ -90,6 +97,7 @@ __published:	// IDE-managed Components
 	TPanel *pnBase_Status;
 	TAdvMemo *memo;
 	TAdvMemo *AdvMemo1;
+	TAdvStringGrid *grid;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall MenuBtn_ViewClick(TObject *Sender);
 	void __fastcall MenuBtn_SettingClick(TObject *Sender);

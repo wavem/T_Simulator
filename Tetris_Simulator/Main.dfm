@@ -37,7 +37,6 @@ object FormMain: TFormMain
     Contexts = <>
     TabOrder = 0
     TabStop = False
-    ExplicitWidth = 846
     object RibbonMenuTab_Main: TdxRibbonTab
       Active = True
       Caption = 'Menu'
@@ -63,10 +62,6 @@ object FormMain: TFormMain
     Color = cl3DDkShadow
     ParentBackground = False
     TabOrder = 5
-    ExplicitLeft = 168
-    ExplicitTop = 216
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object Notebook_Main: TNotebook
       Left = 0
       Top = 0
@@ -74,16 +69,10 @@ object FormMain: TFormMain
       Height = 616
       Align = alClient
       TabOrder = 0
-      ExplicitLeft = 208
-      ExplicitTop = 56
-      ExplicitWidth = 206
-      ExplicitHeight = 150
       object TPage
         Left = 0
         Top = 0
         Caption = 'Default'
-        ExplicitWidth = 150
-        ExplicitHeight = 150
         object _pnBase_01_Main: TPanel
           Left = 0
           Top = 0
@@ -94,10 +83,6 @@ object FormMain: TFormMain
           Color = cl3DDkShadow
           ParentBackground = False
           TabOrder = 0
-          ExplicitLeft = 88
-          ExplicitTop = 96
-          ExplicitWidth = 185
-          ExplicitHeight = 41
           object AdvMemo1: TAdvMemo
             Left = 17
             Top = 16
@@ -212,6 +197,148 @@ object FormMain: TFormMain
             Version = '3.4.1.0'
             WordWrap = wwNone
           end
+          object grid: TAdvStringGrid
+            Left = 37
+            Top = 232
+            Width = 874
+            Height = 256
+            Cursor = crDefault
+            TabStop = False
+            ColCount = 11
+            Ctl3D = True
+            DefaultRowHeight = 28
+            DoubleBuffered = True
+            DrawingStyle = gdsClassic
+            FixedCols = 0
+            RowCount = 9
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
+            ParentCtl3D = False
+            ParentDoubleBuffered = False
+            ParentFont = False
+            ScrollBars = ssNone
+            TabOrder = 1
+            HoverRowCells = [hcNormal, hcSelected]
+            ActiveCellFont.Charset = DEFAULT_CHARSET
+            ActiveCellFont.Color = clWindowText
+            ActiveCellFont.Height = -11
+            ActiveCellFont.Name = 'Tahoma'
+            ActiveCellFont.Style = [fsBold]
+            BorderColor = cl3DDkShadow
+            ColumnHeaders.Strings = (
+              'Idx'
+              'Status'
+              'Connect'
+              'IP'
+              'ID')
+            ControlLook.FixedGradientHoverFrom = clGray
+            ControlLook.FixedGradientHoverTo = clWhite
+            ControlLook.FixedGradientDownFrom = clGray
+            ControlLook.FixedGradientDownTo = clSilver
+            ControlLook.DropDownHeader.Font.Charset = DEFAULT_CHARSET
+            ControlLook.DropDownHeader.Font.Color = clWindowText
+            ControlLook.DropDownHeader.Font.Height = -11
+            ControlLook.DropDownHeader.Font.Name = 'Tahoma'
+            ControlLook.DropDownHeader.Font.Style = []
+            ControlLook.DropDownHeader.Visible = True
+            ControlLook.DropDownHeader.Buttons = <>
+            ControlLook.DropDownFooter.Font.Charset = DEFAULT_CHARSET
+            ControlLook.DropDownFooter.Font.Color = clWindowText
+            ControlLook.DropDownFooter.Font.Height = -11
+            ControlLook.DropDownFooter.Font.Name = 'Tahoma'
+            ControlLook.DropDownFooter.Font.Style = []
+            ControlLook.DropDownFooter.Visible = True
+            ControlLook.DropDownFooter.Buttons = <>
+            DefaultAlignment = taCenter
+            EnableWheel = False
+            Filter = <>
+            FilterDropDown.Font.Charset = DEFAULT_CHARSET
+            FilterDropDown.Font.Color = clWindowText
+            FilterDropDown.Font.Height = -11
+            FilterDropDown.Font.Name = 'Tahoma'
+            FilterDropDown.Font.Style = []
+            FilterDropDown.TextChecked = 'Checked'
+            FilterDropDown.TextUnChecked = 'Unchecked'
+            FilterDropDownClear = '(All)'
+            FilterEdit.TypeNames.Strings = (
+              'Starts with'
+              'Ends with'
+              'Contains'
+              'Not contains'
+              'Equal'
+              'Not equal'
+              'Larger than'
+              'Smaller than'
+              'Clear')
+            FixedColWidth = 32
+            FixedRowHeight = 28
+            FixedFont.Charset = DEFAULT_CHARSET
+            FixedFont.Color = clWindowText
+            FixedFont.Height = -11
+            FixedFont.Name = 'Tahoma'
+            FixedFont.Style = [fsBold]
+            FloatFormat = '%.2f'
+            HoverButtons.Buttons = <>
+            HoverButtons.Position = hbLeftFromColumnLeft
+            HTMLSettings.ImageFolder = 'images'
+            HTMLSettings.ImageBaseName = 'img'
+            IntelliZoom = False
+            MouseActions.AutoSizeColOnDblClick = False
+            PrintSettings.DateFormat = 'dd/mm/yyyy'
+            PrintSettings.Font.Charset = DEFAULT_CHARSET
+            PrintSettings.Font.Color = clWindowText
+            PrintSettings.Font.Height = -11
+            PrintSettings.Font.Name = 'Tahoma'
+            PrintSettings.Font.Style = []
+            PrintSettings.FixedFont.Charset = DEFAULT_CHARSET
+            PrintSettings.FixedFont.Color = clWindowText
+            PrintSettings.FixedFont.Height = -11
+            PrintSettings.FixedFont.Name = 'Tahoma'
+            PrintSettings.FixedFont.Style = []
+            PrintSettings.HeaderFont.Charset = DEFAULT_CHARSET
+            PrintSettings.HeaderFont.Color = clWindowText
+            PrintSettings.HeaderFont.Height = -11
+            PrintSettings.HeaderFont.Name = 'Tahoma'
+            PrintSettings.HeaderFont.Style = []
+            PrintSettings.FooterFont.Charset = DEFAULT_CHARSET
+            PrintSettings.FooterFont.Color = clWindowText
+            PrintSettings.FooterFont.Height = -11
+            PrintSettings.FooterFont.Name = 'Tahoma'
+            PrintSettings.FooterFont.Style = []
+            PrintSettings.PageNumSep = '/'
+            SearchFooter.FindNextCaption = 'Find &next'
+            SearchFooter.FindPrevCaption = 'Find &previous'
+            SearchFooter.Font.Charset = DEFAULT_CHARSET
+            SearchFooter.Font.Color = clWindowText
+            SearchFooter.Font.Height = -11
+            SearchFooter.Font.Name = 'Tahoma'
+            SearchFooter.Font.Style = []
+            SearchFooter.HighLightCaption = 'Highlight'
+            SearchFooter.HintClose = 'Close'
+            SearchFooter.HintFindNext = 'Find next occurrence'
+            SearchFooter.HintFindPrev = 'Find previous occurrence'
+            SearchFooter.HintHighlight = 'Highlight occurrences'
+            SearchFooter.MatchCaseCaption = 'Match case'
+            ShowSelection = False
+            SortSettings.DefaultFormat = ssAutomatic
+            Version = '7.8.0.1'
+            ColWidths = (
+              32
+              101
+              54
+              54
+              54
+              110
+              70
+              100
+              110
+              110
+              75)
+          end
         end
       end
       object TPage
@@ -219,8 +346,6 @@ object FormMain: TFormMain
         Top = 0
         HelpContext = 1
         Caption = 'Setting'
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object _pnBase_02_Setting: TPanel
           Left = 0
           Top = 0
@@ -229,10 +354,6 @@ object FormMain: TFormMain
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitLeft = 168
-          ExplicitTop = 72
-          ExplicitWidth = 185
-          ExplicitHeight = 41
         end
       end
     end
@@ -400,8 +521,8 @@ object FormMain: TFormMain
           Visible = True
           ItemName = 'MenuBtn_Setting'
         end>
-      OneOnRow = True
-      Row = 1
+      OneOnRow = False
+      Row = 0
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -420,7 +541,7 @@ object FormMain: TFormMain
           Visible = True
           ItemName = 'MenuBtn_Version'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = False
       Visible = True
