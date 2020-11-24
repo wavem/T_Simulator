@@ -198,3 +198,11 @@ void __fastcall TFormMain::gridButtonClick(TObject *Sender, int ACol, int ARow)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TFormMain::MenuBtn_VersionClick(TObject *Sender)
+{
+	TFormVersion *dlg = new TFormVersion(NULL);
+	dlg->ShowModal();
+	delete dlg;
+}
+//---------------------------------------------------------------------------
+

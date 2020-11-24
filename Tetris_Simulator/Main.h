@@ -4,6 +4,7 @@
 #define MainH
 //---------------------------------------------------------------------------
 #include "TCPSocketThread.h"
+#include "Version.h"
 
 //---------------------------------------------------------------------------
 #include <System.Classes.hpp>
@@ -104,6 +105,7 @@ __published:	// IDE-managed Components
 	void __fastcall MenuBtn_ViewClick(TObject *Sender);
 	void __fastcall MenuBtn_SettingClick(TObject *Sender);
 	void __fastcall gridButtonClick(TObject *Sender, int ACol, int ARow);
+	void __fastcall MenuBtn_VersionClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TFormMain(TComponent* Owner);
