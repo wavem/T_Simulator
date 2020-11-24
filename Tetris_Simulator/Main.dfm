@@ -5,7 +5,7 @@ object FormMain: TFormMain
   BorderStyle = bsSingle
   Caption = 'T_Simulator'
   ClientHeight = 931
-  ClientWidth = 1274
+  ClientWidth = 1061
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -21,7 +21,7 @@ object FormMain: TFormMain
   object RibbonMenu: TdxRibbon
     Left = 0
     Top = 0
-    Width = 1274
+    Width = 1061
     Height = 124
     Cursor = crHandPoint
     BarManager = BarMgr
@@ -37,6 +37,7 @@ object FormMain: TFormMain
     Contexts = <>
     TabOrder = 0
     TabStop = False
+    ExplicitWidth = 1274
     object RibbonMenuTab_Main: TdxRibbonTab
       Active = True
       Caption = 'Menu'
@@ -55,39 +56,43 @@ object FormMain: TFormMain
   object __pnBase: TPanel
     Left = 0
     Top = 124
-    Width = 1274
+    Width = 1061
     Height = 807
     Align = alClient
     BevelOuter = bvNone
     Color = cl3DDkShadow
     ParentBackground = False
     TabOrder = 5
+    ExplicitWidth = 1274
     object Notebook_Main: TNotebook
       Left = 0
       Top = 0
-      Width = 1274
+      Width = 1061
       Height = 616
       Align = alClient
       TabOrder = 0
+      ExplicitWidth = 1274
       object TPage
         Left = 0
         Top = 0
         Caption = 'Default'
+        ExplicitWidth = 1274
         object _pnBase_01_Main: TPanel
           Left = 0
           Top = 0
-          Width = 1274
+          Width = 1061
           Height = 616
           Align = alClient
           BevelOuter = bvNone
           Color = cl3DDkShadow
           ParentBackground = False
           TabOrder = 0
+          ExplicitWidth = 1274
           object AdvMemo1: TAdvMemo
-            Left = 17
-            Top = 16
-            Width = 600
-            Height = 175
+            Left = 602
+            Top = 24
+            Width = 441
+            Height = 561
             Cursor = crIBeam
             ActiveLineSettings.ShowActiveLine = False
             ActiveLineSettings.ShowActiveLineIndicator = False
@@ -198,31 +203,32 @@ object FormMain: TFormMain
             WordWrap = wwNone
           end
           object grid: TAdvStringGrid
-            Left = 37
-            Top = 232
-            Width = 874
-            Height = 256
+            Left = 21
+            Top = 24
+            Width = 575
+            Height = 564
             Cursor = crDefault
             TabStop = False
-            ColCount = 11
+            ColCount = 7
             Ctl3D = True
             DefaultRowHeight = 28
             DoubleBuffered = True
             DrawingStyle = gdsClassic
             FixedCols = 0
-            RowCount = 9
+            RowCount = 61
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -13
             Font.Name = 'Tahoma'
             Font.Style = [fsBold]
-            Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
+            Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRowSelect]
             ParentCtl3D = False
             ParentDoubleBuffered = False
             ParentFont = False
-            ScrollBars = ssNone
+            ScrollBars = ssVertical
             TabOrder = 1
             HoverRowCells = [hcNormal, hcSelected]
+            OnButtonClick = gridButtonClick
             ActiveCellFont.Charset = DEFAULT_CHARSET
             ActiveCellFont.Color = clWindowText
             ActiveCellFont.Height = -11
@@ -233,8 +239,10 @@ object FormMain: TFormMain
               'Idx'
               'Status'
               'Connect'
+              'Disconnect'
               'IP'
-              'ID')
+              'ID'
+              'Enter')
             ControlLook.FixedGradientHoverFrom = clGray
             ControlLook.FixedGradientHoverTo = clWhite
             ControlLook.FixedGradientDownFrom = clGray
@@ -254,7 +262,7 @@ object FormMain: TFormMain
             ControlLook.DropDownFooter.Visible = True
             ControlLook.DropDownFooter.Buttons = <>
             DefaultAlignment = taCenter
-            EnableWheel = False
+            EnableHTML = False
             Filter = <>
             FilterDropDown.Font.Charset = DEFAULT_CHARSET
             FilterDropDown.Font.Color = clWindowText
@@ -274,7 +282,7 @@ object FormMain: TFormMain
               'Larger than'
               'Smaller than'
               'Clear')
-            FixedColWidth = 32
+            FixedColWidth = 30
             FixedRowHeight = 28
             FixedFont.Charset = DEFAULT_CHARSET
             FixedFont.Color = clWindowText
@@ -282,12 +290,17 @@ object FormMain: TFormMain
             FixedFont.Name = 'Tahoma'
             FixedFont.Style = [fsBold]
             FloatFormat = '%.2f'
+            GridImages = ImgList
             HoverButtons.Buttons = <>
             HoverButtons.Position = hbLeftFromColumnLeft
             HTMLSettings.ImageFolder = 'images'
             HTMLSettings.ImageBaseName = 'img'
+            IntelliPan = ipNone
             IntelliZoom = False
             MouseActions.AutoSizeColOnDblClick = False
+            MouseActions.WheelIncrement = 1
+            MouseActions.WheelAction = waScroll
+            MouseActions.WheelActive = waMouseOver
             PrintSettings.DateFormat = 'dd/mm/yyyy'
             PrintSettings.Font.Charset = DEFAULT_CHARSET
             PrintSettings.Font.Color = clWindowText
@@ -310,6 +323,7 @@ object FormMain: TFormMain
             PrintSettings.FooterFont.Name = 'Tahoma'
             PrintSettings.FooterFont.Style = []
             PrintSettings.PageNumSep = '/'
+            ScrollSynch = True
             SearchFooter.FindNextCaption = 'Find &next'
             SearchFooter.FindPrevCaption = 'Find &previous'
             SearchFooter.Font.Charset = DEFAULT_CHARSET
@@ -327,17 +341,13 @@ object FormMain: TFormMain
             SortSettings.DefaultFormat = ssAutomatic
             Version = '7.8.0.1'
             ColWidths = (
-              32
-              101
-              54
-              54
-              54
-              110
-              70
+              30
+              44
               100
-              110
-              110
-              75)
+              100
+              120
+              80
+              80)
           end
         end
       end
@@ -346,31 +356,34 @@ object FormMain: TFormMain
         Top = 0
         HelpContext = 1
         Caption = 'Setting'
+        ExplicitWidth = 1274
         object _pnBase_02_Setting: TPanel
           Left = 0
           Top = 0
-          Width = 1274
+          Width = 1061
           Height = 616
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
+          ExplicitWidth = 1274
         end
       end
     end
     object pnBase_Status: TPanel
       Left = 0
       Top = 616
-      Width = 1274
+      Width = 1061
       Height = 191
       Align = alBottom
       BevelOuter = bvNone
       Color = clBlack
       ParentBackground = False
       TabOrder = 1
+      ExplicitWidth = 1274
       object memo: TAdvMemo
         Left = 9
         Top = 8
-        Width = 600
+        Width = 587
         Height = 175
         Cursor = crIBeam
         ActiveLineSettings.ShowActiveLine = False
@@ -970,5 +983,9 @@ object FormMain: TFormMain
         0000000000000000000000000000000000000000000000000000}
       Width = 60
     end
+  end
+  object ImgList: TImageList
+    Left = 944
+    Top = 4
   end
 end

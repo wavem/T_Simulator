@@ -101,6 +101,10 @@ void __fastcall TFormMain::InitProgram() {
 	// Notebook Page Setting
 	Notebook_Main->PageIndex = 0; // Main
 
+	// Init Grid
+	InitGrid();
+
+
 
 
 	// Socket Init
@@ -134,6 +138,39 @@ void __fastcall TFormMain::ExitProgram() {
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TFormMain::InitGrid() {
+
+	// Common
+	UnicodeString tempStr = L"";
+
+	// Load Images
+	TBitmap* t_bmp = new TBitmap;
+	t_bmp->LoadFromFile(L".\\Images\\green.bmp");
+	ImgList->Add(t_bmp, t_bmp);
+	t_bmp->FreeImage();
+
+	t_bmp->LoadFromFile(L".\\Images\\gray.bmp");
+	ImgList->Add(t_bmp, t_bmp);
+	t_bmp->FreeImage();
+
+	delete t_bmp;
+
+	// Setting
+	grid->ControlLook->NoDisabledButtonLook = true;
+
+	// Init Grid
+	int t_RowCnt = grid->RowCount;
+	for(int i = 1 ; i < t_RowCnt ; i++) {
+		grid->Cells[0][i] = i;
+		grid->AddImageIdx(1, i, 1, haCenter, Advgrid::vaCenter);
+		grid->AddButton(2, i, 92, 24, L"Connect", haCenter, Advgrid::vaCenter);
+		grid->AddButton(3, i, 92, 24, L"Disconnect", haCenter, Advgrid::vaCenter);
+		grid->Cells[4][i] = L"192.168.220.201";
+		grid->Cells[5][i] = L"0000";
+		grid->AddButton(6, i, 72, 24, L"Enter", haCenter, Advgrid::vaCenter);
+	}
+}
+//---------------------------------------------------------------------------
 
 void __fastcall TFormMain::MenuBtn_ViewClick(TObject *Sender)
 {
@@ -144,6 +181,20 @@ void __fastcall TFormMain::MenuBtn_ViewClick(TObject *Sender)
 void __fastcall TFormMain::MenuBtn_SettingClick(TObject *Sender)
 {
 	Notebook_Main->PageIndex = 1; // Setting
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormMain::gridButtonClick(TObject *Sender, int ACol, int ARow)
+{
+	if(ACol == 2) {
+		grid->RemoveImageIdx(1, ARow);
+		grid->AddImageIdx(1, ARow, 0, haCenter, Advgrid::vaCenter);
+	} else if(ACol == 3) {
+		grid->RemoveImageIdx(1, ARow);
+		grid->AddImageIdx(1, ARow, 1, haCenter, Advgrid::vaCenter);
+	} else if(ACol == 6) {
+		PrintMsg(L"hihi");
+	}
 }
 //---------------------------------------------------------------------------
 

@@ -77,6 +77,7 @@
 #include "AdvObj.hpp"
 #include "BaseGrid.hpp"
 #include <Vcl.Grids.hpp>
+#include <Vcl.ImgList.hpp>
 //---------------------------------------------------------------------------
 class TFormMain : public TForm
 {
@@ -98,9 +99,11 @@ __published:	// IDE-managed Components
 	TAdvMemo *memo;
 	TAdvMemo *AdvMemo1;
 	TAdvStringGrid *grid;
+	TImageList *ImgList;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall MenuBtn_ViewClick(TObject *Sender);
 	void __fastcall MenuBtn_SettingClick(TObject *Sender);
+	void __fastcall gridButtonClick(TObject *Sender, int ACol, int ARow);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TFormMain(TComponent* Owner);
@@ -109,6 +112,7 @@ public: // START MJW
 	void __fastcall InitProgram();
 	void __fastcall ExitProgram();
 	void __fastcall PrintMsg(UnicodeString _str);
+	void __fastcall InitGrid();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TFormMain *FormMain;
