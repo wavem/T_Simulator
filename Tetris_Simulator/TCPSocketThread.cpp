@@ -10,6 +10,7 @@ __fastcall CTcpSocketThread::CTcpSocketThread(SOCKET *p_sock) {
 	m_eThreadWork = THREAD_STOP;
 	Priority = tpTimeCritical;
 	m_sock = p_sock;
+	//FreeOnTerminate = true;
 }
 //---------------------------------------------------------------------------
 
@@ -33,7 +34,7 @@ void __fastcall CTcpSocketThread::Execute() {
 
 	t_Str = L"Thread Start";
 	SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
-
+	m_eThreadWork = THREAD_RUNNING;
 
 	// Try to Connect
 	while(!Terminated) {
@@ -48,6 +49,8 @@ void __fastcall CTcpSocketThread::Execute() {
 			SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
 			m_eThreadWork == THREAD_TERMINATED;
 		}
+		t_Str = L"Connected !!!";
+		SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
 		break;
 	}
 
