@@ -113,6 +113,10 @@
         <BCC_PCHName_Clang>Tetris_Simulator_PCH1.h</BCC_PCHName_Clang>
     </PropertyGroup>
     <ItemGroup>
+        <CppCompile Include="Define.cpp">
+            <DependentOn>Define.h</DependentOn>
+            <BuildOrder>5</BuildOrder>
+        </CppCompile>
         <CppCompile Include="Main.cpp">
             <Form>FormMain</Form>
             <FormType>dfm</FormType>

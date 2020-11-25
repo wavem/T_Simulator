@@ -19,7 +19,11 @@ private:
 	SOCKET	*m_sock;
 
 protected:
-public:
+public: // Variables
+	BYTE sendBuff[300];
+	BYTE recvBuff[1300];
+
+public: // Functions
 	__fastcall CTcpSocketThread(SOCKET *p_sock);
 	__fastcall ~CTcpSocketThread();
 	void __fastcall Execute();

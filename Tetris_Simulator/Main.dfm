@@ -383,7 +383,7 @@ object FormMain: TFormMain
       object memo: TAdvMemo
         Left = 9
         Top = 8
-        Width = 587
+        Width = 1044
         Height = 175
         Cursor = crIBeam
         ActiveLineSettings.ShowActiveLine = False
@@ -474,7 +474,7 @@ object FormMain: TFormMain
         ScrollHint = False
         SelColor = clWhite
         SelBkColor = clNavy
-        ShowRightMargin = True
+        ShowRightMargin = False
         SmartTabs = False
         TabOrder = 0
         TabStop = True

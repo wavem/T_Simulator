@@ -6,8 +6,6 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-
-
 __fastcall CTcpSocketThread::CTcpSocketThread(SOCKET *p_sock) {
 	m_eThreadWork = THREAD_STOP;
 	Priority = tpTimeCritical;
@@ -16,13 +14,64 @@ __fastcall CTcpSocketThread::CTcpSocketThread(SOCKET *p_sock) {
 //---------------------------------------------------------------------------
 
 __fastcall CTcpSocketThread::~CTcpSocketThread() {
-
+	UnicodeString tempStr = L"Thread Terminated";
+	SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&tempStr, 0x10);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall CTcpSocketThread::Execute() {
 
+	// Common
+	UnicodeString t_Str = L"";
+
+	struct sockaddr_in	t_sockaddr_in;
+	memset(&t_sockaddr_in, 0, sizeof(t_sockaddr_in));
+	t_sockaddr_in.sin_family = AF_INET;
+	//t_sockaddr_in.sin_addr.s_addr = htonl(IP_SERVER); inet_addr
+	t_sockaddr_in.sin_addr.s_addr = inet_addr(IP_SERVER);
+	t_sockaddr_in.sin_port = htons(TCP_SERVER_PORT);
+
+	t_Str = L"Thread Start";
+	SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
+
+
+	// Try to Connect
+	while(!Terminated) {
+		if(m_eThreadWork != THREAD_RUNNING) {
+			if(m_eThreadWork == THREAD_TERMINATED) break;
+			WaitForSingleObject((void*)this->Handle, 500);
+			continue;
+		}
+
+		if(connect(*m_sock, (struct sockaddr*)&t_sockaddr_in, sizeof(sockaddr_in)) < 0) {
+			t_Str = L"Connection Error";
+			SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
+			m_eThreadWork == THREAD_TERMINATED;
+		}
+		break;
+	}
+
+	// Receive Routine
+	BYTE recv_buff[TCP_RECV_BUF_SIZE];
+	ZeroMemory( &recv_buff, sizeof(recv_buff));
+	int recv_buff_size = sizeof(recv_buff);
+
+	while(!Terminated) {
+		if(m_eThreadWork != THREAD_RUNNING) {
+			if(m_eThreadWork == THREAD_TERMINATED) break;
+			WaitForSingleObject((void*)this->Handle, 500);
+			continue;
+		}
+
+		WaitForSingleObject((void*)this->Handle, 100);
+	}
+
+	//memcpy(FormMain->m_Info[i].m_DataBuf, recv_buff, MCAST_PACKET_SIZE_RCV);
+
+	m_eThreadWork = THREAD_TERMINATED;
+
 #if 0
+
 	// Common
 	UnicodeString t_Str = L"";
 	UnicodeString tempStr = L"";

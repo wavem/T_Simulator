@@ -104,6 +104,13 @@ void __fastcall TFormMain::InitProgram() {
 	// Init Grid
 	InitGrid();
 
+	// Init Client Thread and Member Socket
+	for(int i = 0 ; i < MAX_CLIENT_COUNT ; i++) {
+		m_Client[i] = NULL;
+		m_sock_Client[i] = INVALID_SOCKET;
+	}
+
+
 
 
 
@@ -126,7 +133,6 @@ void __fastcall TFormMain::InitProgram() {
 	} else {
 		PrintMsg(L"Socket init success");
 	}
-
 }
 //---------------------------------------------------------------------------
 
@@ -135,6 +141,37 @@ void __fastcall TFormMain::ExitProgram() {
 
 	// Socket
 	WSACleanup();
+}
+//---------------------------------------------------------------------------
+
+bool __fastcall TFormMain::CreateTCPSocket(SOCKET* _socket) {
+
+	// Common
+	UnicodeString tempStr = L"";
+	AnsiString t_AnsiStr = "";
+
+	// Create Socket
+	*_socket = socket(AF_INET, SOCK_STREAM, 0);
+	if(*_socket == INVALID_SOCKET) {
+		PrintMsg(L"Fail to create socket");
+		return false;
+	}
+
+	// Set Socket Option : REUSE
+	int t_opt_reuse = 1;
+	if(setsockopt(*_socket, SOL_SOCKET, SO_REUSEADDR,(char *)&t_opt_reuse, sizeof(t_opt_reuse)) == SOCKET_ERROR) {
+		PrintMsg(L"Fail to set socket option (REUSE)");
+		return false;
+	}
+
+	return true;
+}
+//---------------------------------------------------------------------------
+
+bool __fastcall TFormMain::DeleteTCPSocket(SOCKET* _socket) {
+	closesocket(*_socket);
+	*_socket = INVALID_SOCKET;
+	return true;
 }
 //---------------------------------------------------------------------------
 
@@ -186,14 +223,77 @@ void __fastcall TFormMain::MenuBtn_SettingClick(TObject *Sender)
 
 void __fastcall TFormMain::gridButtonClick(TObject *Sender, int ACol, int ARow)
 {
-	if(ACol == 2) {
-		grid->RemoveImageIdx(1, ARow);
-		grid->AddImageIdx(1, ARow, 0, haCenter, Advgrid::vaCenter);
-	} else if(ACol == 3) {
-		grid->RemoveImageIdx(1, ARow);
-		grid->AddImageIdx(1, ARow, 1, haCenter, Advgrid::vaCenter);
-	} else if(ACol == 6) {
-		PrintMsg(L"hihi");
+	// Common
+	UnicodeString tempStr = L"";
+
+	// Fix Index
+	int t_Idx = ARow - 1;
+
+	if(ACol == 2) { // Connect Button
+		// Create Socket
+		if(m_sock_Client[t_Idx] != INVALID_SOCKET) {
+			tempStr.sprintf(L"Client Socket [%d] is already exists.", t_Idx);
+			PrintMsg(tempStr);
+			return;
+		}
+
+		if(CreateTCPSocket(&m_sock_Client[t_Idx])) {
+			// Set Cell Icon as GREEN
+			grid->RemoveImageIdx(1, ARow);
+			grid->AddImageIdx(1, ARow, 0, haCenter, Advgrid::vaCenter);
+
+			// Print Message
+			tempStr.sprintf(L"Success to create Client Socket [%d]", t_Idx);
+			PrintMsg(tempStr);
+
+			// Create Thread
+			if(m_Client[t_Idx] != NULL) {
+				tempStr.sprintf(L"Client [%d] Thread is already exists.", t_Idx);
+				PrintMsg(tempStr);
+				return;
+			}
+			m_Client[t_Idx] = new CTcpSocketThread(&m_sock_Client[t_Idx]);
+
+		} else {
+			tempStr.sprintf(L"Fail to create Client Socket [%d]", t_Idx);
+			PrintMsg(tempStr);
+		}
+
+	} else if(ACol == 3) { // Disconnect Button
+
+		if(m_sock_Client[t_Idx] == INVALID_SOCKET) {
+			tempStr.sprintf(L"There is no Client Socket [%d].", t_Idx);
+			PrintMsg(tempStr);
+			return;
+		}
+
+		if(DeleteTCPSocket(&m_sock_Client[t_Idx])) {
+			// Set Cell Icon as GRAY
+			grid->RemoveImageIdx(1, ARow);
+			grid->AddImageIdx(1, ARow, 1, haCenter, Advgrid::vaCenter);
+
+			// Print Message
+			tempStr.sprintf(L"Success to delete Client Socket [%d]", t_Idx);
+			PrintMsg(tempStr);
+
+			// Destroy Thread
+			if(m_Client[t_Idx] == NULL) {
+				tempStr.sprintf(L"There is no Client [%d] Thread.", t_Idx);
+				PrintMsg(tempStr);
+				return;
+			}
+			m_Client[t_Idx]->DoTerminate();
+			m_Client[t_Idx]->Terminate();
+			delete m_Client[t_Idx];
+
+		} else {
+			tempStr.sprintf(L"Fail to delete Client Socket [%d]", t_Idx);
+			PrintMsg(tempStr);
+		}
+
+	} else if(ACol == 6) { // Enter Button
+		tempStr.sprintf(L"Entering to [%d] Client", t_Idx);
+		PrintMsg(tempStr);
 	}
 }
 //---------------------------------------------------------------------------
@@ -203,6 +303,18 @@ void __fastcall TFormMain::MenuBtn_VersionClick(TObject *Sender)
 	TFormVersion *dlg = new TFormVersion(NULL);
 	dlg->ShowModal();
 	delete dlg;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormMain::ReceiveMsg(TMessage &_msg) {
+	unsigned int t_wParam = _msg.WParam;
+	int t_lParam = _msg.LParam;
+
+	UnicodeString tempStr = L"";
+	UnicodeString *p = NULL;
+	p = (UnicodeString*)t_wParam;
+	tempStr = *p;
+	PrintMsg(tempStr);
 }
 //---------------------------------------------------------------------------
 

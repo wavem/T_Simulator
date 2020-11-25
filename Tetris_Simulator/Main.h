@@ -3,6 +3,7 @@
 #ifndef MainH
 #define MainH
 //---------------------------------------------------------------------------
+#include "Define.h"
 #include "TCPSocketThread.h"
 #include "Version.h"
 
@@ -80,6 +81,7 @@
 #include <Vcl.Grids.hpp>
 #include <Vcl.ImgList.hpp>
 //---------------------------------------------------------------------------
+class CTcpSocketThread;
 class TFormMain : public TForm
 {
 __published:	// IDE-managed Components
@@ -115,6 +117,18 @@ public: // START MJW
 	void __fastcall ExitProgram();
 	void __fastcall PrintMsg(UnicodeString _str);
 	void __fastcall InitGrid();
+	CTcpSocketThread *m_Client[MAX_CLIENT_COUNT];
+	SOCKET m_sock_Client[MAX_CLIENT_COUNT];
+	bool __fastcall CreateTCPSocket(SOCKET* _socket);
+	bool __fastcall DeleteTCPSocket(SOCKET* _socket);
+
+	// Message Handler
+	void __fastcall ReceiveMsg(TMessage &_msg);
+
+
+BEGIN_MESSAGE_MAP
+	MESSAGE_HANDLER(MSG_FROM_THREAD, TMessage, ReceiveMsg)
+END_MESSAGE_MAP(TForm)
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TFormMain *FormMain;
