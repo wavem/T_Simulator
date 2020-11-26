@@ -22,6 +22,8 @@ protected:
 public: // Variables
 	BYTE sendBuff[300];
 	BYTE recvBuff[1300];
+	bool isTryingToConnect;
+	bool isConnected;
 
 public: // Functions
 	__fastcall CTcpSocketThread(SOCKET *p_sock);

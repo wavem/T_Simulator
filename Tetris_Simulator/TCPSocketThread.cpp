@@ -10,12 +10,13 @@ __fastcall CTcpSocketThread::CTcpSocketThread(SOCKET *p_sock) {
 	m_eThreadWork = THREAD_STOP;
 	Priority = tpTimeCritical;
 	m_sock = p_sock;
-	//FreeOnTerminate = true;
+	isTryingToConnect = true;
+	isConnected = false;
 }
 //---------------------------------------------------------------------------
 
 __fastcall CTcpSocketThread::~CTcpSocketThread() {
-	UnicodeString tempStr = L"Thread Terminated";
+	UnicodeString tempStr = L"Thread Terminated (from Thread Destroyer)";
 	SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&tempStr, 0x10);
 }
 //---------------------------------------------------------------------------
@@ -24,11 +25,13 @@ void __fastcall CTcpSocketThread::Execute() {
 
 	// Common
 	UnicodeString t_Str = L"";
+	AnsiString t_AnsiStr = "";
+	int t_errno = 0;
+	int t_ConnectTryingCount = 1;
 
 	struct sockaddr_in	t_sockaddr_in;
 	memset(&t_sockaddr_in, 0, sizeof(t_sockaddr_in));
 	t_sockaddr_in.sin_family = AF_INET;
-	//t_sockaddr_in.sin_addr.s_addr = htonl(IP_SERVER); inet_addr
 	t_sockaddr_in.sin_addr.s_addr = inet_addr(IP_SERVER);
 	t_sockaddr_in.sin_port = htons(TCP_SERVER_PORT);
 
@@ -44,14 +47,38 @@ void __fastcall CTcpSocketThread::Execute() {
 			continue;
 		}
 
-		if(connect(*m_sock, (struct sockaddr*)&t_sockaddr_in, sizeof(sockaddr_in)) < 0) {
-			t_Str = L"Connection Error";
+		if(t_ConnectTryingCount < 6) {
+			t_errno = connect(*m_sock, (struct sockaddr*)&t_sockaddr_in, sizeof(sockaddr_in));
+			if(t_errno < 0) {
+				t_Str.sprintf(L"Connection Error : Trying Count(%d)", t_ConnectTryingCount);
+				SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
+
+				t_AnsiStr = strerror(t_errno);
+				t_Str = L"Error String : ";
+				t_Str += t_AnsiStr;
+				SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
+				m_eThreadWork == THREAD_TERMINATED;
+				t_ConnectTryingCount++;
+				continue;
+			} else {
+				t_Str = L"Connected !!!";
+				SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
+				isTryingToConnect = false;
+				isConnected = true;
+				break;
+			}
+		} else {
+			isTryingToConnect = false;
+			isConnected = false;
+			t_Str = L"Fail to Connect to Server...";
 			SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
-			m_eThreadWork == THREAD_TERMINATED;
+			break;
 		}
-		t_Str = L"Connected !!!";
-		SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
-		break;
+	}
+
+	if(isConnected == false) {
+		m_eThreadWork = THREAD_TERMINATED;
+		return;
 	}
 
 	// Receive Routine

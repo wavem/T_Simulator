@@ -37,7 +37,6 @@ object FormMain: TFormMain
     Contexts = <>
     TabOrder = 0
     TabStop = False
-    ExplicitWidth = 1274
     object RibbonMenuTab_Main: TdxRibbonTab
       Active = True
       Caption = 'Menu'
@@ -63,7 +62,6 @@ object FormMain: TFormMain
     Color = cl3DDkShadow
     ParentBackground = False
     TabOrder = 5
-    ExplicitWidth = 1274
     object Notebook_Main: TNotebook
       Left = 0
       Top = 0
@@ -71,12 +69,10 @@ object FormMain: TFormMain
       Height = 616
       Align = alClient
       TabOrder = 0
-      ExplicitWidth = 1274
       object TPage
         Left = 0
         Top = 0
         Caption = 'Default'
-        ExplicitWidth = 1274
         object _pnBase_01_Main: TPanel
           Left = 0
           Top = 0
@@ -87,7 +83,6 @@ object FormMain: TFormMain
           Color = cl3DDkShadow
           ParentBackground = False
           TabOrder = 0
-          ExplicitWidth = 1274
           object AdvMemo1: TAdvMemo
             Left = 602
             Top = 24
@@ -356,7 +351,6 @@ object FormMain: TFormMain
         Top = 0
         HelpContext = 1
         Caption = 'Setting'
-        ExplicitWidth = 1274
         object _pnBase_02_Setting: TPanel
           Left = 0
           Top = 0
@@ -365,7 +359,6 @@ object FormMain: TFormMain
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 1274
         end
       end
     end
@@ -379,7 +372,6 @@ object FormMain: TFormMain
       Color = clBlack
       ParentBackground = False
       TabOrder = 1
-      ExplicitWidth = 1274
       object memo: TAdvMemo
         Left = 9
         Top = 8
@@ -988,5 +980,10 @@ object FormMain: TFormMain
   object ImgList: TImageList
     Left = 944
     Top = 4
+  end
+  object tm_Connect_Lamp: TTimer
+    Interval = 500
+    OnTimer = tm_Connect_LampTimer
+    Left = 640
   end
 end

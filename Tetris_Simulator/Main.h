@@ -103,11 +103,13 @@ __published:	// IDE-managed Components
 	TAdvMemo *AdvMemo1;
 	TAdvStringGrid *grid;
 	TImageList *ImgList;
+	TTimer *tm_Connect_Lamp;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall MenuBtn_ViewClick(TObject *Sender);
 	void __fastcall MenuBtn_SettingClick(TObject *Sender);
 	void __fastcall gridButtonClick(TObject *Sender, int ACol, int ARow);
 	void __fastcall MenuBtn_VersionClick(TObject *Sender);
+	void __fastcall tm_Connect_LampTimer(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TFormMain(TComponent* Owner);
@@ -121,6 +123,9 @@ public: // START MJW
 	SOCKET m_sock_Client[MAX_CLIENT_COUNT];
 	bool __fastcall CreateTCPSocket(SOCKET* _socket);
 	bool __fastcall DeleteTCPSocket(SOCKET* _socket);
+	void __fastcall ClickConnectButton(int _ColIdx, int _RowIdx);
+	void __fastcall ClickDisConnectButton(int _ColIdx, int _RowIdx);
+	void __fastcall ClickEnterButton(int _ColIdx, int _RowIdx);
 
 	// Message Handler
 	void __fastcall ReceiveMsg(TMessage &_msg);

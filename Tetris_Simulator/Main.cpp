@@ -138,8 +138,25 @@ void __fastcall TFormMain::InitProgram() {
 
 void __fastcall TFormMain::ExitProgram() {
 
+	// Delete Socket
+	for(int i = 0 ; i < MAX_CLIENT_COUNT ; i++) {
+		if(m_sock_Client[i] != INVALID_SOCKET) {
+			closesocket(m_sock_Client[i]);
+			m_sock_Client[i] = INVALID_SOCKET;
+		}
+	}
 
-	// Socket
+	// Delete Thread
+	for(int i = 0 ; i < MAX_CLIENT_COUNT ; i++) {
+		if(m_Client[i] != NULL) {
+			m_Client[i]->DoTerminate();
+			m_Client[i]->Terminate();
+			delete m_Client[i];
+			m_Client[i] = NULL;
+		}
+	}
+
+	// Socket Clean Up
 	WSACleanup();
 }
 //---------------------------------------------------------------------------
@@ -223,78 +240,106 @@ void __fastcall TFormMain::MenuBtn_SettingClick(TObject *Sender)
 
 void __fastcall TFormMain::gridButtonClick(TObject *Sender, int ACol, int ARow)
 {
+	// Processing
+	if(ACol == 2) { // Connect Button
+		ClickConnectButton(ACol, ARow);
+	} else if(ACol == 3) { // Disconnect Button
+		ClickDisConnectButton(ACol, ARow);
+	} else if(ACol == 6) { // Enter Button
+		ClickEnterButton(ACol, ARow);
+	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormMain::ClickConnectButton(int _ColIdx, int _RowIdx) {
+
 	// Common
 	UnicodeString tempStr = L"";
+	int t_Idx = _RowIdx - 1;
 
-	// Fix Index
-	int t_Idx = ARow - 1;
+	// Create Socket
+	if(m_sock_Client[t_Idx] != INVALID_SOCKET) {
+		tempStr.sprintf(L"Client Socket [%d] is already exists.", t_Idx);
+		PrintMsg(tempStr);
+		return;
+	}
 
-	if(ACol == 2) { // Connect Button
-		// Create Socket
-		if(m_sock_Client[t_Idx] != INVALID_SOCKET) {
-			tempStr.sprintf(L"Client Socket [%d] is already exists.", t_Idx);
+	if(CreateTCPSocket(&m_sock_Client[t_Idx])) {
+		// Set Cell Icon as GREEN
+		grid->RemoveImageIdx(1, _RowIdx);
+		grid->AddImageIdx(1, _RowIdx, 0, haCenter, Advgrid::vaCenter);
+
+		// Print Message
+		tempStr.sprintf(L"Success to create Client Socket [%d]", t_Idx);
+		PrintMsg(tempStr);
+
+		// Create Thread
+		if(m_Client[t_Idx] != NULL) {
+			tempStr.sprintf(L"Client [%d] Thread is already exists.", t_Idx);
 			PrintMsg(tempStr);
 			return;
 		}
 
-		if(CreateTCPSocket(&m_sock_Client[t_Idx])) {
-			// Set Cell Icon as GREEN
-			grid->RemoveImageIdx(1, ARow);
-			grid->AddImageIdx(1, ARow, 0, haCenter, Advgrid::vaCenter);
+		// Creating Client Thread
+		m_Client[t_Idx] = new CTcpSocketThread(&m_sock_Client[t_Idx]);
 
-			// Print Message
-			tempStr.sprintf(L"Success to create Client Socket [%d]", t_Idx);
-			PrintMsg(tempStr);
-
-			// Create Thread
-			if(m_Client[t_Idx] != NULL) {
-				tempStr.sprintf(L"Client [%d] Thread is already exists.", t_Idx);
-				PrintMsg(tempStr);
-				return;
-			}
-			m_Client[t_Idx] = new CTcpSocketThread(&m_sock_Client[t_Idx]);
-
-		} else {
-			tempStr.sprintf(L"Fail to create Client Socket [%d]", t_Idx);
-			PrintMsg(tempStr);
-		}
-
-	} else if(ACol == 3) { // Disconnect Button
-
-		if(m_sock_Client[t_Idx] == INVALID_SOCKET) {
-			tempStr.sprintf(L"There is no Client Socket [%d].", t_Idx);
-			PrintMsg(tempStr);
-			return;
-		}
-
-		if(DeleteTCPSocket(&m_sock_Client[t_Idx])) {
-			// Set Cell Icon as GRAY
-			grid->RemoveImageIdx(1, ARow);
-			grid->AddImageIdx(1, ARow, 1, haCenter, Advgrid::vaCenter);
-
-			// Print Message
-			tempStr.sprintf(L"Success to delete Client Socket [%d]", t_Idx);
-			PrintMsg(tempStr);
-
-			// Destroy Thread
-			if(m_Client[t_Idx] == NULL) {
-				tempStr.sprintf(L"There is no Client [%d] Thread.", t_Idx);
-				PrintMsg(tempStr);
-				return;
-			}
-			m_Client[t_Idx]->DoTerminate();
-			m_Client[t_Idx]->Terminate();
-			delete m_Client[t_Idx];
-
-		} else {
-			tempStr.sprintf(L"Fail to delete Client Socket [%d]", t_Idx);
-			PrintMsg(tempStr);
-		}
-
-	} else if(ACol == 6) { // Enter Button
-		tempStr.sprintf(L"Entering to [%d] Client", t_Idx);
+	} else {
+		tempStr.sprintf(L"Fail to create Client Socket [%d]", t_Idx);
 		PrintMsg(tempStr);
 	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormMain::ClickDisConnectButton(int _ColIdx, int _RowIdx) {
+
+	// Common
+	UnicodeString tempStr = L"";
+	int t_Idx = _RowIdx - 1;
+
+	if(m_sock_Client[t_Idx] == INVALID_SOCKET) {
+		tempStr.sprintf(L"There is no Client Socket [%d].", t_Idx);
+		PrintMsg(tempStr);
+		return;
+	}
+
+	if(DeleteTCPSocket(&m_sock_Client[t_Idx])) {
+
+		// Print Message
+		tempStr.sprintf(L"Success to delete Client Socket [%d]", t_Idx);
+		PrintMsg(tempStr);
+
+		// Destroy Thread
+		if(m_Client[t_Idx] == NULL) {
+			tempStr.sprintf(L"There is no Client [%d] Thread.", t_Idx);
+			PrintMsg(tempStr);
+			return;
+		}
+		m_Client[t_Idx]->DoTerminate();
+		m_Client[t_Idx]->Terminate();
+		delete m_Client[t_Idx];
+		m_Client[t_Idx] = NULL;
+		tempStr.sprintf(L"Thread [%d] has been terminated", t_Idx);
+		PrintMsg(tempStr);
+
+		// Set Cell Icon as GRAY
+		grid->RemoveImageIdx(1, _RowIdx);
+		grid->AddImageIdx(1, _RowIdx, 1, haCenter, Advgrid::vaCenter);
+
+	} else {
+		tempStr.sprintf(L"Fail to delete Client Socket [%d]", t_Idx);
+		PrintMsg(tempStr);
+	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormMain::ClickEnterButton(int _ColIdx, int _RowIdx) {
+
+	// Common
+	UnicodeString tempStr = L"";
+	int t_Idx = _RowIdx - 1;
+
+	tempStr.sprintf(L"Entering to [%d] Client", t_Idx);
+	PrintMsg(tempStr);
 }
 //---------------------------------------------------------------------------
 
@@ -315,6 +360,44 @@ void __fastcall TFormMain::ReceiveMsg(TMessage &_msg) {
 	p = (UnicodeString*)t_wParam;
 	tempStr = *p;
 	PrintMsg(tempStr);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormMain::tm_Connect_LampTimer(TObject *Sender)
+{
+	// Static Decleare
+	static bool IsLampOn = false;
+
+	// Common
+	int t_Idx = 0;
+
+	for(int i = 0 ; i < MAX_CLIENT_COUNT ; i++) {
+		if(m_Client[i] == NULL) continue;
+		t_Idx = i + 1;
+		if(m_Client[i]->isTryingToConnect) {
+			if(IsLampOn) {
+				// Set Cell Icon as GREEN
+				grid->RemoveImageIdx(1, t_Idx);
+				grid->AddImageIdx(1, t_Idx, 0, haCenter, Advgrid::vaCenter);
+			} else {
+				// Set Cell Icon as GRAY
+				grid->RemoveImageIdx(1, t_Idx);
+				grid->AddImageIdx(1, t_Idx, 1, haCenter, Advgrid::vaCenter);
+			}
+		} else if(m_Client[i]->isConnected) {
+			// Set Cell Icon as GREEN
+			grid->RemoveImageIdx(1, t_Idx);
+			grid->AddImageIdx(1, t_Idx, 0, haCenter, Advgrid::vaCenter);
+
+		} else {
+			// Set Cell Icon as GRAY
+			grid->RemoveImageIdx(1, t_Idx);
+			grid->AddImageIdx(1, t_Idx, 1, haCenter, Advgrid::vaCenter);
+		}
+	}
+
+	// Change Lamp Status
+	IsLampOn = !IsLampOn;
 }
 //---------------------------------------------------------------------------
 
