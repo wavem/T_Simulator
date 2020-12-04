@@ -71,6 +71,8 @@
 #pragma link "AdvGrid"
 #pragma link "AdvObj"
 #pragma link "BaseGrid"
+#pragma link "AdvGlassButton"
+#pragma link "AdvEdit"
 #pragma resource "*.dfm"
 TFormMain *FormMain;
 //---------------------------------------------------------------------------
@@ -109,6 +111,9 @@ void __fastcall TFormMain::InitProgram() {
 		m_Client[i] = NULL;
 		m_sock_Client[i] = INVALID_SOCKET;
 	}
+
+	// Init ETC
+	m_SelectedClientIdx = 0;
 
 
 
@@ -222,6 +227,7 @@ void __fastcall TFormMain::InitGrid() {
 		grid->Cells[4][i] = L"192.168.220.201";
 		grid->Cells[5][i] = L"0000";
 		grid->AddButton(6, i, 72, 24, L"Enter", haCenter, Advgrid::vaCenter);
+		grid->Cells[7][i] = L"unknown";
 	}
 }
 //---------------------------------------------------------------------------
@@ -337,9 +343,14 @@ void __fastcall TFormMain::ClickEnterButton(int _ColIdx, int _RowIdx) {
 	// Common
 	UnicodeString tempStr = L"";
 	int t_Idx = _RowIdx - 1;
+	m_SelectedClientIdx = t_Idx;
 
-	tempStr.sprintf(L"Entering to [%d] Client", t_Idx);
+	tempStr.sprintf(L"Entering to [%d] Client", m_SelectedClientIdx);
 	PrintMsg(tempStr);
+
+	// Change Notebook Page (temp : Lobby)
+	Notebook_Main->PageIndex = 3;
+
 }
 //---------------------------------------------------------------------------
 
@@ -398,6 +409,78 @@ void __fastcall TFormMain::tm_Connect_LampTimer(TObject *Sender)
 
 	// Change Lamp Status
 	IsLampOn = !IsLampOn;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormMain::btn_SendClick(TObject *Sender)
+{
+	SendChatData();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormMain::ed_ChatKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
+{
+	if(Key == VK_RETURN) {
+		SendChatData();
+	}
+}
+//---------------------------------------------------------------------------
+
+bool __fastcall TFormMain::SendChatData() {
+
+	// Common
+	UnicodeString tempStr = L"";
+	int t_ClientIdx = m_SelectedClientIdx;
+	int t_TextLen = 0;
+	int t_sendrst = 0;
+	unsigned short t_PacketLen = 0;
+
+	// Check Client Socket
+	if(m_sock_Client[t_ClientIdx] == INVALID_SOCKET) {
+		tempStr.sprintf(L"Client [%d] socket is invalid", t_ClientIdx);
+		PrintMsg(tempStr);
+		return false;
+	}
+
+	// Check Client Thread
+	if(m_Client[t_ClientIdx] == NULL) {
+		tempStr.sprintf(L"Client [%d] thread is invalid", t_ClientIdx);
+		PrintMsg(tempStr);
+		return false;
+	}
+
+	// Check Connection
+	if(m_Client[t_ClientIdx]->isConnected == false) {
+		tempStr.sprintf(L"Client [%d] is not connected", t_ClientIdx);
+		PrintMsg(tempStr);
+		return false;
+	}
+
+	// Reset Send Buffer
+	memset(m_Client[t_ClientIdx]->sendBuff, 0, TCP_SEND_BUF_SIZE);
+	m_Client[t_ClientIdx]->p_sendText = NULL;
+
+
+	// Extract Chatting Text Data from Edit Control
+	tempStr = ed_Chat->Text;
+	t_TextLen = tempStr.Length() * 2 + 2;// 2 is NULL
+	t_PacketLen = t_TextLen + 4;
+	m_Client[t_ClientIdx]->p_sendText = (unsigned char*)tempStr.c_str();
+
+	// Set Header Data
+	m_Client[t_ClientIdx]->sendBuff[0] = 0x47;
+	memcpy(&m_Client[t_ClientIdx]->sendBuff[1], &t_PacketLen, 2);
+	m_Client[t_ClientIdx]->sendBuff[3] = 0x01; // Not yet defined..
+	memcpy(&m_Client[t_ClientIdx]->sendBuff[4], m_Client[t_ClientIdx]->p_sendText, t_TextLen);
+
+
+	// Send to Server
+	t_sendrst = send(m_sock_Client[t_ClientIdx], (char*)m_Client[t_ClientIdx]->sendBuff, t_PacketLen, 0);
+
+	// Function End Routine
+	ed_Chat->Text = L"";
+	PrintMsg(t_sendrst);
+	return true;
 }
 //---------------------------------------------------------------------------
 

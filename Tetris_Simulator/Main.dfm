@@ -5,7 +5,7 @@ object FormMain: TFormMain
   BorderStyle = bsSingle
   Caption = 'T_Simulator'
   ClientHeight = 931
-  ClientWidth = 1061
+  ClientWidth = 1158
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -21,7 +21,7 @@ object FormMain: TFormMain
   object RibbonMenu: TdxRibbon
     Left = 0
     Top = 0
-    Width = 1061
+    Width = 1158
     Height = 124
     Cursor = crHandPoint
     BarManager = BarMgr
@@ -55,7 +55,7 @@ object FormMain: TFormMain
   object __pnBase: TPanel
     Left = 0
     Top = 124
-    Width = 1061
+    Width = 1158
     Height = 807
     Align = alClient
     BevelOuter = bvNone
@@ -65,9 +65,10 @@ object FormMain: TFormMain
     object Notebook_Main: TNotebook
       Left = 0
       Top = 0
-      Width = 1061
+      Width = 1158
       Height = 616
       Align = alClient
+      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -76,7 +77,7 @@ object FormMain: TFormMain
         object _pnBase_01_Main: TPanel
           Left = 0
           Top = 0
-          Width = 1061
+          Width = 1158
           Height = 616
           Align = alClient
           BevelOuter = bvNone
@@ -84,7 +85,7 @@ object FormMain: TFormMain
           ParentBackground = False
           TabOrder = 0
           object AdvMemo1: TAdvMemo
-            Left = 602
+            Left = 702
             Top = 24
             Width = 441
             Height = 561
@@ -200,11 +201,11 @@ object FormMain: TFormMain
           object grid: TAdvStringGrid
             Left = 21
             Top = 24
-            Width = 575
+            Width = 675
             Height = 564
             Cursor = crDefault
             TabStop = False
-            ColCount = 7
+            ColCount = 8
             Ctl3D = True
             DefaultRowHeight = 28
             DoubleBuffered = True
@@ -232,12 +233,13 @@ object FormMain: TFormMain
             BorderColor = cl3DDkShadow
             ColumnHeaders.Strings = (
               'Idx'
-              'Status'
+              'State'
               'Connect'
               'Disconnect'
               'IP'
               'ID'
-              'Enter')
+              'Enter'
+              'Status')
             ControlLook.FixedGradientHoverFrom = clGray
             ControlLook.FixedGradientHoverTo = clWhite
             ControlLook.FixedGradientDownFrom = clGray
@@ -342,7 +344,8 @@ object FormMain: TFormMain
               100
               120
               80
-              80)
+              80
+              100)
           end
         end
       end
@@ -354,18 +357,134 @@ object FormMain: TFormMain
         object _pnBase_02_Setting: TPanel
           Left = 0
           Top = 0
-          Width = 1061
+          Width = 1158
           Height = 616
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
         end
       end
+      object TPage
+        Left = 0
+        Top = 0
+        HelpContext = 2
+        Caption = 'Login'
+        ExplicitWidth = 0
+        ExplicitHeight = 0
+        object _pnBase_03_Login: TPanel
+          Left = 0
+          Top = 0
+          Width = 1158
+          Height = 616
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clGray
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitLeft = 216
+          ExplicitTop = 176
+          ExplicitWidth = 185
+          ExplicitHeight = 41
+        end
+      end
+      object TPage
+        Left = 0
+        Top = 0
+        HelpContext = 3
+        Caption = 'Lobby'
+        ExplicitWidth = 0
+        ExplicitHeight = 0
+        object _pnBase_04_Lobby: TPanel
+          Left = 0
+          Top = 0
+          Width = 1158
+          Height = 616
+          Align = alClient
+          BevelOuter = bvNone
+          TabOrder = 0
+          ExplicitLeft = 973
+          ExplicitWidth = 616
+          ExplicitHeight = 185
+          object btn_Send: TAdvGlassButton
+            Left = 1032
+            Top = 560
+            Width = 100
+            Height = 32
+            BackColor = clBlack
+            Caption = 'Send'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ForeColor = clWhite
+            GlowColor = 16760205
+            InnerBorderColor = clBlack
+            OuterBorderColor = clWhite
+            ParentFont = False
+            ShineColor = clWhite
+            TabOrder = 1
+            Version = '1.3.0.2'
+            OnClick = btn_SendClick
+          end
+          object ed_Chat: TAdvEdit
+            Left = 32
+            Top = 563
+            Width = 977
+            Height = 26
+            EmptyTextStyle = []
+            LabelFont.Charset = DEFAULT_CHARSET
+            LabelFont.Color = clWindowText
+            LabelFont.Height = -11
+            LabelFont.Name = 'Tahoma'
+            LabelFont.Style = []
+            Lookup.Font.Charset = DEFAULT_CHARSET
+            Lookup.Font.Color = clWindowText
+            Lookup.Font.Height = -11
+            Lookup.Font.Name = 'Arial'
+            Lookup.Font.Style = []
+            Lookup.Separator = ';'
+            Color = clWindow
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -15
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 0
+            Text = 'Message'
+            Visible = True
+            OnKeyDown = ed_ChatKeyDown
+            Version = '3.3.5.3'
+          end
+        end
+      end
+      object TPage
+        Left = 0
+        Top = 0
+        HelpContext = 4
+        Caption = 'InGame'
+        ExplicitWidth = 0
+        ExplicitHeight = 0
+        object _pnBase_05_InGame: TPanel
+          Left = 0
+          Top = 0
+          Width = 1158
+          Height = 616
+          Align = alClient
+          BevelOuter = bvNone
+          TabOrder = 0
+          ExplicitLeft = 136
+          ExplicitTop = 224
+          ExplicitWidth = 185
+          ExplicitHeight = 41
+        end
+      end
     end
     object pnBase_Status: TPanel
       Left = 0
       Top = 616
-      Width = 1061
+      Width = 1158
       Height = 191
       Align = alBottom
       BevelOuter = bvNone
@@ -375,7 +494,7 @@ object FormMain: TFormMain
       object memo: TAdvMemo
         Left = 9
         Top = 8
-        Width = 1044
+        Width = 1141
         Height = 175
         Cursor = crIBeam
         ActiveLineSettings.ShowActiveLine = False

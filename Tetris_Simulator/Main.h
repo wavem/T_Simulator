@@ -80,6 +80,8 @@
 #include "BaseGrid.hpp"
 #include <Vcl.Grids.hpp>
 #include <Vcl.ImgList.hpp>
+#include "AdvGlassButton.hpp"
+#include "AdvEdit.hpp"
 //---------------------------------------------------------------------------
 class CTcpSocketThread;
 class TFormMain : public TForm
@@ -104,28 +106,45 @@ __published:	// IDE-managed Components
 	TAdvStringGrid *grid;
 	TImageList *ImgList;
 	TTimer *tm_Connect_Lamp;
+	TPanel *_pnBase_03_Login;
+	TPanel *_pnBase_04_Lobby;
+	TPanel *_pnBase_05_InGame;
+	TAdvGlassButton *btn_Send;
+	TAdvEdit *ed_Chat;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall MenuBtn_ViewClick(TObject *Sender);
 	void __fastcall MenuBtn_SettingClick(TObject *Sender);
 	void __fastcall gridButtonClick(TObject *Sender, int ACol, int ARow);
 	void __fastcall MenuBtn_VersionClick(TObject *Sender);
 	void __fastcall tm_Connect_LampTimer(TObject *Sender);
+	void __fastcall btn_SendClick(TObject *Sender);
+	void __fastcall ed_ChatKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TFormMain(TComponent* Owner);
 
-public: // START MJW
+// START TETRIS SIMULATOR
+public: // MEMBER
+	CTcpSocketThread *m_Client[MAX_CLIENT_COUNT];
+	SOCKET m_sock_Client[MAX_CLIENT_COUNT];
+	int m_SelectedClientIdx;
+
+public: // BASIC FUNCTIONS
 	void __fastcall InitProgram();
 	void __fastcall ExitProgram();
 	void __fastcall PrintMsg(UnicodeString _str);
 	void __fastcall InitGrid();
-	CTcpSocketThread *m_Client[MAX_CLIENT_COUNT];
-	SOCKET m_sock_Client[MAX_CLIENT_COUNT];
+
+
+
 	bool __fastcall CreateTCPSocket(SOCKET* _socket);
 	bool __fastcall DeleteTCPSocket(SOCKET* _socket);
 	void __fastcall ClickConnectButton(int _ColIdx, int _RowIdx);
 	void __fastcall ClickDisConnectButton(int _ColIdx, int _RowIdx);
 	void __fastcall ClickEnterButton(int _ColIdx, int _RowIdx);
+
+	// Send
+	bool __fastcall SendChatData();
 
 	// Message Handler
 	void __fastcall ReceiveMsg(TMessage &_msg);

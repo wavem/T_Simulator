@@ -20,8 +20,9 @@ private:
 
 protected:
 public: // Variables
-	BYTE sendBuff[300];
-	BYTE recvBuff[1300];
+	BYTE sendBuff[TCP_SEND_BUF_SIZE];
+	BYTE* p_sendText;
+	BYTE recvBuff[TCP_RECV_BUF_SIZE];
 	bool isTryingToConnect;
 	bool isConnected;
 

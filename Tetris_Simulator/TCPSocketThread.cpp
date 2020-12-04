@@ -41,8 +41,9 @@ void __fastcall CTcpSocketThread::Execute() {
 
 	// Try to Connect
 	while(!Terminated) {
+		// For Thread Stop & Resume
 		if(m_eThreadWork != THREAD_RUNNING) {
-			if(m_eThreadWork == THREAD_TERMINATED) break;
+			if(m_eThreadWork == THREAD_TERMINATED) return;
 			WaitForSingleObject((void*)this->Handle, 500);
 			continue;
 		}
@@ -74,6 +75,9 @@ void __fastcall CTcpSocketThread::Execute() {
 			SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
 			break;
 		}
+
+		// Just Wait Moment...
+		WaitForSingleObject((void*)this->Handle, 1000);
 	}
 
 	if(isConnected == false) {
@@ -87,18 +91,28 @@ void __fastcall CTcpSocketThread::Execute() {
 	int recv_buff_size = sizeof(recv_buff);
 
 	while(!Terminated) {
+		// For Thread Stop & Resume
 		if(m_eThreadWork != THREAD_RUNNING) {
-			if(m_eThreadWork == THREAD_TERMINATED) break;
+			if(m_eThreadWork == THREAD_TERMINATED) return;
 			WaitForSingleObject((void*)this->Handle, 500);
 			continue;
 		}
 
+		// Receive Routine Funtion
+
+
+
+
+
+
+		// Just Wait Moment...
 		WaitForSingleObject((void*)this->Handle, 100);
 	}
 
 	//memcpy(FormMain->m_Info[i].m_DataBuf, recv_buff, MCAST_PACKET_SIZE_RCV);
 
 	m_eThreadWork = THREAD_TERMINATED;
+	return;
 
 #if 0
 
