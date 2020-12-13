@@ -29,6 +29,7 @@ public: // Variables
 public: // Functions
 	__fastcall CTcpSocketThread(SOCKET *p_sock);
 	__fastcall ~CTcpSocketThread();
+	bool __fastcall Receive();
 	void __fastcall Execute();
 	void __fastcall Stop();
 	void __fastcall Resume();

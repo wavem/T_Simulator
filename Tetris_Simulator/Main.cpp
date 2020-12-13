@@ -350,7 +350,6 @@ void __fastcall TFormMain::ClickEnterButton(int _ColIdx, int _RowIdx) {
 
 	// Change Notebook Page (temp : Lobby)
 	Notebook_Main->PageIndex = 3;
-
 }
 //---------------------------------------------------------------------------
 
@@ -470,9 +469,8 @@ bool __fastcall TFormMain::SendChatData() {
 	// Set Header Data
 	m_Client[t_ClientIdx]->sendBuff[0] = 0x47;
 	memcpy(&m_Client[t_ClientIdx]->sendBuff[1], &t_PacketLen, 2);
-	m_Client[t_ClientIdx]->sendBuff[3] = 0x01; // Not yet defined..
+	m_Client[t_ClientIdx]->sendBuff[3] = DATA_TYPE_LOBBY_CHATTING;
 	memcpy(&m_Client[t_ClientIdx]->sendBuff[4], m_Client[t_ClientIdx]->p_sendText, t_TextLen);
-
 
 	// Send to Server
 	t_sendrst = send(m_sock_Client[t_ClientIdx], (char*)m_Client[t_ClientIdx]->sendBuff, t_PacketLen, 0);

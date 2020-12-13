@@ -99,22 +99,85 @@ void __fastcall CTcpSocketThread::Execute() {
 		}
 
 		// Receive Routine Funtion
-
-
-
-
-
+		if(Receive()) {
+			t_Str = L"Success to Receive";
+			SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
+		} else {
+			t_Str = L"Fail to Receive";
+			SendMessage(FormMain->Handle, MSG_FROM_THREAD, (unsigned int)&t_Str, 0x10);
+			return;
+		}
 
 		// Just Wait Moment...
 		WaitForSingleObject((void*)this->Handle, 100);
 	}
-
-	//memcpy(FormMain->m_Info[i].m_DataBuf, recv_buff, MCAST_PACKET_SIZE_RCV);
-
 	m_eThreadWork = THREAD_TERMINATED;
 	return;
+}
+//---------------------------------------------------------------------------
+
+bool __fastcall CTcpSocketThread::Receive() {
+
+	// Common
+	UnicodeString tempStr = L"";
+	int t_recvSize = 0;
+	int t_CurrentSize = 0;
+	BYTE t_SecureCode = 0;
+	unsigned short t_PacketSize = 0;
+	BYTE t_MessageType = 0;
+
+	// Reset Buffer
+	memset(recvBuff, 0, sizeof(recvBuff));
+
+	// First Receive
+	t_recvSize = recv(*m_sock, (char*)&t_SecureCode, 1, 0);
+
+	// Check Connection
+	if(t_recvSize == 0 || t_recvSize == -1) return false;
+
+	// Check Secure Code
+	if(t_SecureCode != SECURE_CODE_C_TO_S) return false;
+
+	// Check Data Size
+	t_recvSize = recv(*m_sock, (char*)&t_PacketSize, 2, 0);
+
+	// Check Message Type
+	t_recvSize = recv(*m_sock, (char*)&t_MessageType, 1, 0);
+
+	// Receive Routine
+	t_CurrentSize = 4;
+	while(t_CurrentSize != t_PacketSize) {
+		t_recvSize = recv(*m_sock, (char*)(recvBuff + t_CurrentSize), t_PacketSize - t_CurrentSize, 0);
+		t_CurrentSize += t_recvSize;
+	}
+
+	return true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall CTcpSocketThread::Stop() {
+	m_eThreadWork = THREAD_STOP;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall CTcpSocketThread::Resume() {
+	m_eThreadWork = THREAD_RUNNING;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall CTcpSocketThread::DoTerminate() {
+	m_eThreadWork = THREAD_TERMINATED;
+}
+//---------------------------------------------------------------------------
+
+ThreadWorkingType __fastcall CTcpSocketThread::GetThreadStatus() {
+	return m_eThreadWork;
+}
+//---------------------------------------------------------------------------
+
 
 #if 0
+	// From KVMRT2 Source
 
 	// Common
 	UnicodeString t_Str = L"";
@@ -175,25 +238,3 @@ void __fastcall CTcpSocketThread::Execute() {
 	m_eThreadWork = THREAD_TERMINATED;
 
 #endif
-}
-//---------------------------------------------------------------------------
-
-void __fastcall CTcpSocketThread::Stop() {
-	m_eThreadWork = THREAD_STOP;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall CTcpSocketThread::Resume() {
-	m_eThreadWork = THREAD_RUNNING;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall CTcpSocketThread::DoTerminate() {
-	m_eThreadWork = THREAD_TERMINATED;
-}
-//---------------------------------------------------------------------------
-
-ThreadWorkingType __fastcall CTcpSocketThread::GetThreadStatus() {
-	return m_eThreadWork;
-}
-//---------------------------------------------------------------------------

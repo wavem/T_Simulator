@@ -369,8 +369,6 @@ object FormMain: TFormMain
         Top = 0
         HelpContext = 2
         Caption = 'Login'
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object _pnBase_03_Login: TPanel
           Left = 0
           Top = 0
@@ -381,10 +379,6 @@ object FormMain: TFormMain
           Color = clGray
           ParentBackground = False
           TabOrder = 0
-          ExplicitLeft = 216
-          ExplicitTop = 176
-          ExplicitWidth = 185
-          ExplicitHeight = 41
         end
       end
       object TPage
@@ -392,8 +386,6 @@ object FormMain: TFormMain
         Top = 0
         HelpContext = 3
         Caption = 'Lobby'
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object _pnBase_04_Lobby: TPanel
           Left = 0
           Top = 0
@@ -402,9 +394,6 @@ object FormMain: TFormMain
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitLeft = 973
-          ExplicitWidth = 616
-          ExplicitHeight = 185
           object btn_Send: TAdvGlassButton
             Left = 1032
             Top = 560
@@ -464,8 +453,6 @@ object FormMain: TFormMain
         Top = 0
         HelpContext = 4
         Caption = 'InGame'
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object _pnBase_05_InGame: TPanel
           Left = 0
           Top = 0
@@ -474,10 +461,6 @@ object FormMain: TFormMain
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitLeft = 136
-          ExplicitTop = 224
-          ExplicitWidth = 185
-          ExplicitHeight = 41
         end
       end
     end
