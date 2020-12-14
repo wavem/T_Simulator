@@ -111,6 +111,30 @@ __published:	// IDE-managed Components
 	TPanel *_pnBase_05_InGame;
 	TAdvGlassButton *btn_Send;
 	TAdvEdit *ed_Chat;
+	TAdvEdit *ed_Signup_UserName;
+	TLabel *lb_Login_Signup_UserName;
+	TLabel *lb_Login_Title_Signup;
+	TLabel *lb_Login_Title_Signin;
+	TLabel *lb_Login_Title_Signout;
+	TLabel *lb_Login_Signup_UserID;
+	TLabel *lb_Login_Signup_Password;
+	TAdvEdit *ed_Signup_UserID;
+	TAdvEdit *ed_Signup_UserPW;
+	TButton *btn_Signup;
+	TLabel *lb_Login_Signin_UserName;
+	TLabel *lb_Login_Signin_UserID;
+	TLabel *lb_Login_Signin_Password;
+	TAdvEdit *ed_Signin_UserName;
+	TAdvEdit *ed_Signin_UserID;
+	TAdvEdit *ed_Signin_UserPW;
+	TButton *btn_Signin;
+	TButton *btn_Signout;
+	TLabel *lb_Login_Signout_UserName;
+	TLabel *lb_Login_Signout_UserID;
+	TLabel *lb_Login_Signout_Password;
+	TAdvEdit *ed_Signout_UserName;
+	TAdvEdit *ed_Signout_UserID;
+	TAdvEdit *ed_Signout_UserPW;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall MenuBtn_ViewClick(TObject *Sender);
 	void __fastcall MenuBtn_SettingClick(TObject *Sender);
@@ -119,6 +143,7 @@ __published:	// IDE-managed Components
 	void __fastcall tm_Connect_LampTimer(TObject *Sender);
 	void __fastcall btn_SendClick(TObject *Sender);
 	void __fastcall ed_ChatKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
+	void __fastcall btn_SignupClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TFormMain(TComponent* Owner);
