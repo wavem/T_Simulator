@@ -29,10 +29,11 @@
 #define DATA_TYPE_INGAME_CHATTING	5
 #define DATA_TYPE_CHANGE_USER_INFO	6
 #define DATA_TYPE_INGAME_CMD		7
-#define DATA_TYPE_ENTER_GAME_ROOM	8
-#define DATA_TYPE_ESCAPE_GAME_ROOM	9
-#define DATA_TYPE_HEART_BEAT		10
-#define DATA_TYPE_INGAME_DATA		11
+#define DATA_TYPE_MAKE_GAME_ROOM	8
+#define DATA_TYPE_ENTER_GAME_ROOM	9
+#define DATA_TYPE_ESCAPE_GAME_ROOM	10
+#define DATA_TYPE_HEART_BEAT		11
+#define DATA_TYPE_INGAME_DATA		12
 
 //---------------------------------------------------------------------------
 #endif
